@@ -29,6 +29,6 @@ make
 ### Тестирование
 ```bash
 # Linux
-chmod +x test_script.sh
+chmod +x tests.sh
 ./tests.sh
 ```
