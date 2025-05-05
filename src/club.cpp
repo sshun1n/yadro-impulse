@@ -95,17 +95,18 @@ void Club::processEvent(const std::string& event) {
     auto evt = Event::parseEvent(event);
     if (!evt) return;
 
+    int id = evt->getId();
     Time time = evt->getTime();
     std::string client = evt->getClient();
     int table_num = evt->getTable();
 
-    if (evt->getId() == 1) 
+    if (id == 1) 
     {
         if (time < start_time || time >= end_time) generateErrorEvent(time, "NotOpenYet");
         else if (clients.find(client) != clients.end()) generateErrorEvent(time, "YouShallNotPass"); 
         else clients[client] = time;
     } 
-    else if (evt->getId() == 2) 
+    else if (id == 2) 
     {
         if (clients.find(client) == clients.end()) generateErrorEvent(time, "ClientUnknown");
         else if (tables[table_num - 1].isOccupied() || (tables[table_num - 1].getClient() == client)) generateErrorEvent(time, "PlaceIsBusy");
@@ -123,7 +124,7 @@ void Club::processEvent(const std::string& event) {
             tables[table_num - 1].occupy(client, time);
         }
     } 
-    else if (evt->getId() == 3) 
+    else if (id == 3) 
     {
         if (clients.find(client) == clients.end()) generateErrorEvent(time, "ClientUnknown");
         else if (std::any_of(tables.begin(), tables.end(), [](const Table& t) { return !t.isOccupied(); })) generateErrorEvent(time, "ICanWaitNoLonger!");
@@ -134,7 +135,7 @@ void Club::processEvent(const std::string& event) {
         } 
         else waiting_queue.push(client);
     } 
-    else if (evt->getId() == 4) {
+    else if (id == 4) {
         if (clients.find(client) == clients.end()) generateErrorEvent(time, "ClientUnknown");
         else 
         {
