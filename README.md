@@ -30,5 +30,5 @@ make
 ```bash
 # Linux
 chmod +x tests.sh
-./tests.sh
+bash tests.sh
 ```
